@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const JWT_SECRET = 'secretsecretsecret';
 const User = require('../models/user');
 
 exports.signup = async (req, res, next) => {
@@ -9,7 +10,7 @@ exports.signup = async (req, res, next) => {
     if(!errors.isEmpty()){
         const error = new Error('Validation failed, entered data is incorrect!');
         error.statusCode = 422;
-        error.data = error.array();
+        // error.data = error.array();
         throw error;
     }
     const email = req.body.email;
@@ -52,7 +53,7 @@ exports.login = async (req, res, next) => {
         }
         const token = jwt.sign(
             { email: user.email, userId: user._id.toString()}, 
-            'secretsecretsecret',
+            JWT_SECRET,
             {expiresIn: '1h'}
         );
         res.status(200).json({ token: token, userId: user._id.toString() });

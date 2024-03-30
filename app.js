@@ -3,14 +3,17 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 
 const feedRoutes = require('./routes/feed');
 const authRoutes = require('./routes/auth');
 
 const app = express();
 
-const { v4: uuidv4 } = require('uuid');
-     
+// Variáveis de Ambiente
+const MONGO_URI = 'mongodb+srv://matheus:<password>@cluster0.kiejtwv.mongodb.net/messages?retryWrites=true&w=majority&appName=Cluster0';
+const PORT = 8080;
+
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, 'images');
@@ -52,11 +55,9 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(
-    'mongodb+srv://matheus:<password>@cluster0.kiejtwv.mongodb.net/messages?retryWrites=true&w=majority&appName=Cluster0'
-  )
+  .connect(MONGO_URI)
   .then(result => {
-    const server = app.listen(8080);
+    const server = app.listen(PORT);
     const io = require('./socket').init(server);
     io.on('connection', socket => {
         console.log('Client connected');
