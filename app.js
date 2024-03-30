@@ -53,7 +53,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    'mongodb+srv://matheus:w82wFpPtQBa116XZ@cluster0.kiejtwv.mongodb.net/messages?retryWrites=true&w=majority&appName=Cluster0'
+    'mongodb+srv://matheus:<password>@cluster0.kiejtwv.mongodb.net/messages?retryWrites=true&w=majority&appName=Cluster0'
   )
   .then(result => {
     const server = app.listen(8080);

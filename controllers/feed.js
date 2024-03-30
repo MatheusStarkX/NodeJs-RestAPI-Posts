@@ -157,7 +157,7 @@ exports.deletePost = async (req, res, next) => {
         }
         clearImage(post.imageUrl);
         await Post.findByIdAndDelete(postId);
-        const user = await Post.findById(req.userId);
+        const user = await User.findById(req.userId);
         user.posts.pull(postId);
         await user.save();
         io.getIO().emit('posts', {
